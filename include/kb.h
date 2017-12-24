@@ -4,11 +4,13 @@
 #include "serial.h"
 #include "max.h"
 #include "led.h"
+#include "speaker.h"
 
 #define MAX_KEYS_PRESSED 2
 #define QUEUE_LENGTH 10
-
+const unsigned char SPEAKER_TIME=100;
 unsigned char column = 3;
+unsigned char speaker;
 unsigned char bounce[4][4] = {{0}};
 unsigned short time[4][4] = {{0}};
 unsigned char queue[QUEUE_LENGTH] = {0};
@@ -98,13 +100,27 @@ void timer_kb(void) __interrupt( 1 ) {
 			key_pressed = 0;
 			if (bounce[row][column] >= 3 && time[row][column] == 1) {
 				capture_input(keyboard[row][column]);
+				speaker=1;
+				enable_speaker();
 			}
 			else if (time[row][column] >= 15) {
 				capture_input(keyboard[row][column]);
+				speaker=1;
+				enable_speaker();
 				time[row][column] = 2;
 			}
 		}
 	}
+
+	if( speaker>0 ){
+		speaker++;
+		
+		if(speaker==SPEAKER_TIME){
+			disable_speaker();
+			speaker=0;
+		}
+	}
+
 	TH0 = 0xED;    // T0 1kHz
 	TL0 = 0xBB;
 }

@@ -3,7 +3,6 @@
 
 #include "aduc812.h"
 
-//Названия регистров
 #define KB          0x0
 #define DATA_IND    0x1
 #define EXT_LO      0x2
@@ -13,9 +12,7 @@
 #define SV          0x7
 
 
-#define MAXBASE 0x8 //Номер страницы внешней памяти (xdata), куда отображаются
-                    //регистры расширителя.
-
+#define MAXBASE 0x8 
 					
 void write_max( unsigned char xdata *regnum, unsigned char val ) {
 	unsigned char oldDPP = DPP;
