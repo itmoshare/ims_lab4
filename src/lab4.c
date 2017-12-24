@@ -1,6 +1,7 @@
 #include "main.h"
 #include "kb.h"
 #include "serial.h"
+#include "speaker.h"
 
 #define NORMAL 0xFF
 #define DEBUG 0xFE
@@ -61,7 +62,8 @@ static int to_num(char *num, unsigned char size) {
 static int add_char(unsigned char button) {
     READ_FIFO[ir++] = button;
 	if(READ_FIFO[ir - 1] == '*') {
-       if(num_size == 0) return -1;
+       if(num_size == 0) 
+        return -1;
 	   return 1;
      }
 	 num_size++;
@@ -88,7 +90,8 @@ void main() {
 
     uart_s_init(S9600);
     init_kb_timer();
-
+    initialize_speaker();
+    
     EA = 1;
 
     while (1) {
@@ -98,9 +101,20 @@ void main() {
                 ET0 = 0;
 				
                 button = get_input();
-				if(button=='*') uart_s_write('=');
-				else uart_s_write(button);
-				
+                if(button=='*') 
+                {
+                    uart_s_write('=');
+                }    
+                else (if button >= '0' && button <='9')
+                {
+                    uart_s_write(button);
+                }    
+                else 
+                {
+                    fail();
+                    continue;
+                }   
+                    
 				rc = add_char(button);
 				if(rc < 0) {
 					fail();
