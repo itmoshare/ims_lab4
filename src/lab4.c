@@ -17,7 +17,7 @@ unsigned char READ_FIFO[BUFFSZ] = {0};
 unsigned char ir = 0;
 
 unsigned char num_size = 0;
-char currentNumber = 0;
+int currentNumber = 0;
 
 
 void print_error(){
@@ -49,7 +49,7 @@ void print_result() {
     type(EOL);
 }
 
-static int to_num(char *num, unsigned char size) {
+static int to_num(int *num, unsigned char size) {
     if(size == 3) *num = (READ_FIFO[0] - '0') * 100 + (READ_FIFO[1] - '0') *10 + (READ_FIFO[2] - '0');
     else if (size == 2) *num = (READ_FIFO[0] - '0') * 10 + (READ_FIFO[1] - '0');
 	else *num = READ_FIFO[fifo_pos] - '0';

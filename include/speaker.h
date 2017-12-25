@@ -4,7 +4,7 @@
 #include "interrupt.h"
 #include "max.h"
 
-bool speaker_on;
+unsigned char speaker_on;
 
 void T0_ISR( void ) __interrupt ( 2 );
 
