@@ -65,8 +65,8 @@ static int add_char(unsigned char button) {
        if(num_size == 0) 
         return -1;
 	   return 1;
-     }
-	 num_size++;
+    }
+	num_size++;
 	return 0;
 }
 

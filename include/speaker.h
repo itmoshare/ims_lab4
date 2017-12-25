@@ -6,29 +6,29 @@
 
 unsigned char speaker_on;
 
-void T0_ISR( void ) __interrupt ( 2 );
+void T1_ISR( void ) __interrupt ( 2 );
 
 void initialize_speaker() 
 {
-    SetVector( 0x200B, (void *)T0_ISR );
+    SetVector( 0x201B, (void *)T1_ISR );
 	TMOD|=0b00000010; 
-	ET0=1;      
-	TH0=-250;
+	ET1=1;      
+	TH1=-250;
 }
 void enable_speaker()
 {
     speaker_on=0;
-	TL0=-250;
-    TR0=1;   
+	TL1=-250;
+    TR1=1;   
 }
 void disable_speaker()
 {
-    TR0=0;    
+    TR1=0;    
 	speaker_on=0;
 	write_max(ENA, 0b0100000);
 }
 
-void T0_ISR( void ) __interrupt ( 2 ){
+void T1_ISR( void ) __interrupt ( 2 ){
 	if( speaker_on ){
 		write_max(ENA, 0b0111100);
 	}else{
